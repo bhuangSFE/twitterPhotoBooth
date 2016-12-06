@@ -15,7 +15,8 @@ import twitter4j.*;
 import twitter4j.auth.*;
 import twitter4j.api.*;
 import java.util.*;
-boolean tweet = false;
+
+boolean tweet = true;
 
 String TopTitle = "CSEDWeek Boulder 2016";
 String BottomTitle = "SparkFun Electronics - MaKeyMaKey";
@@ -29,6 +30,7 @@ Capture cam;
 int imgNum;
 boolean takePhoto;
 boolean lastPressed;
+int dlgConfirm;
 
 File lastImage; 
 PImage imgSparkFunLogo;
@@ -103,11 +105,15 @@ void draw() {
 
   if (takePhoto)
   {
-    //int dlgConfirm = showConfirmDialog(null, "Do you wish to tweet this?", "Tweet?", YES_NO_OPTION);
-    //if(dlgConfirm == 0)
-    //  tweetPic(lastImage, baseTweet);
+    if (tweet)
+    {
+      dlgConfirm = showConfirmDialog(null, "Do you wish to tweet this?", "Tweet?", YES_NO_OPTION);
+      if (dlgConfirm == 0) {
+        println("Sending tweet out");
+        tweetPic(lastImage, baseTweet);
+      }
+    }
     takePhoto = false;
-    delay(1000);
   }
 }
 /********************************************************************************/
@@ -126,15 +132,6 @@ void keyPressed() {
     save(imgFilename);
     imgNum++;
     lastImage = new File(sketchPath() + "/" + imgFilename);
-    if (tweet)
-    {
-      //tweetPic(lastImage, baseTweet);
-      //tweetMessage("We're ready for the #CSEdWeek Kick-off @TwitterBoulder. Come by the new offices on Pearl Street today at 2pm. #HourOfCode");
-      println("Sending tweet out");
-    } else
-    {
-      println("No tweet sent. Image saved.");
-    }
     takePhoto = true;
     shutterSound.play();
     lastPressed = true;
