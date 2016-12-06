@@ -131,6 +131,11 @@ void keyPressed() {
     imgFilename = "image" + imgNum + ".jpg";
     save(imgFilename);
     imgNum++;
+    
+    //limit to storing 10 photos
+    if(imgNum > 9)
+      imgNum = 0;
+    
     lastImage = new File(sketchPath() + "/" + imgFilename);
     takePhoto = true;
     shutterSound.play();
